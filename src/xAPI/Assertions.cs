@@ -18,15 +18,15 @@ namespace xAPI
       /// <param name="assertions"></param>
       /// <param name="expected">the object we are expecting</param>
       /// <param name="actual">the actual object printed</param>
-      public static void JsonEquals(this Assertions assertions, object expected, object actual)
+      /*public static void JsonEquals(this Assertions assertions, object expected, object actual)
       {
-
+        
       }
 
       public static void JsonEqualsAndOKResult()
       {
 
-      }
+      }*/
 
    }
 }
