@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using Xunit.Sdk;
+using Microsoft.Build.Evaluation;
 
 namespace xAPI
 {
@@ -24,13 +25,18 @@ namespace xAPI
 
       public override void Before(MethodInfo methodUnderTest)
       {
-         var folderPath = Path.GetDirectoryName(FilePathProjectFile);
-         process = Process.Start(folderPath + "/bin/Debug/net6.0/xApi.Test.SampleProject.exe");
+         process = new Process();
+         process.StartInfo.UseShellExecute = true;
+         process.StartInfo.FileName = "dotnet";
+         process.StartInfo.Arguments = $"run --project \"{FilePathProjectFile}\"";
+         var started = process.Start();
+
+         int test = 30;
       }
 
       public override void After(MethodInfo methodUnderTest)
       {
-         process.Kill();
+         //process.Kill();
       }
 
    }
