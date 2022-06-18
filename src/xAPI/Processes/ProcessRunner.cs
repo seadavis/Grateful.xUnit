@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -26,7 +27,11 @@ namespace xAPI.Processes
       #region Private Variables
 
       private object methodLock = new object();
+
+      // the number of methods currently testing the
+      // given process. 
       private int openMethods = 0;
+      private Process process;
 
       #endregion
 
@@ -38,7 +43,7 @@ namespace xAPI.Processes
       /// </summary>
       internal string ProjectFileName { get; set; }
 
-      internal IHttpClient Client { get; private set; }
+      internal HttpClient Client { get; private set; }
       internal ProcessState CurrentState { get; private set; }
 
       #endregion
@@ -55,12 +60,15 @@ namespace xAPI.Processes
       #region Internal Methods
 
       /// <summary>
-      /// Starts the process running.
+      /// Starts the process running and constructs the corresponding
+      /// HttpClient if no process is running.
+      /// Otherwise just tells the process that there is one more method
+      /// that needs to exit before it can be killed.
       /// Throws an error if the process is unable to be start.
       /// </summary>
       internal void Enter(MethodInfo method)
       {
-
+         
       }
 
       /// <summary>
