@@ -1,11 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using xAPI.Clients;
 
-namespace xAPI
+namespace xAPI.Processes
 {
+   internal enum ProcessState
+   {
+      Starting,
+      Started,
+      Stopping,
+      Stopped
+   }
+
    /// <summary>
    /// Provides the methods required to,
    /// run the ASP.NET process that is currently
@@ -13,6 +23,13 @@ namespace xAPI
    /// </summary>
    internal class ProcessRunner
    {
+      #region Private Variables
+
+      private object methodLock = new object();
+      private int openMethods = 0;
+
+      #endregion
+
       #region Properties
 
       /// <summary>
@@ -21,8 +38,19 @@ namespace xAPI
       /// </summary>
       internal string ProjectFileName { get; set; }
 
+      internal IHttpClient Client { get; private set; }
+      internal ProcessState CurrentState { get; private set; }
+
       #endregion
 
+      #region Constructor
+
+      public ProcessRunner()
+      {
+         CurrentState = ProcessState.Stopped;
+      }
+
+      #endregion
 
       #region Internal Methods
 
@@ -30,47 +58,20 @@ namespace xAPI
       /// Starts the process running.
       /// Throws an error if the process is unable to be start.
       /// </summary>
-      internal void Start()
+      internal void Enter(MethodInfo method)
       {
 
       }
 
       /// <summary>
-      /// Kills the process that is currently running.
+      /// Leave the method and tell stop the process
+      /// if it is the only process left.
       /// </summary>
-      internal void Kill()
+      internal void Leave(MethodInfo method)
       {
 
       }
 
-      /// <summary>
-      /// Method for checking whether or not that process is
-      /// actually started.
-      /// 
-      /// For Example:
-      /// <code>
-      /// ProcessRunner r = new ProcessRunner();
-      /// r.IsStarted();
-      /// </code>
-      /// would result in false.
-      /// 
-      /// But:
-      /// 
-      /// <code>
-      /// ProcessRunner r = new ProcessRunner()
-      /// r.Start()
-      /// r.IsStarted()
-      /// </code>
-      /// 
-      /// would result in true.
-      /// 
-      /// Is thread safe so callers do not need to worry about this being true or false.
-      /// 
-      /// </summary>
-      internal bool IsStarted()
-      {
-         return false;
-      }
 
       #endregion
 

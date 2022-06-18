@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
 using Xunit.Sdk;
-using Microsoft.Build.Evaluation;
+using Newtonsoft.Json;
 
 namespace xAPI
 {
@@ -14,7 +14,7 @@ namespace xAPI
 
 
       /// <summary>
-      /// 
+      /// Starts the ASP.Net process and builds the corresponding HttpClient.
       /// </summary>
       /// <param name="filePath">The path to the .NET project that we
       /// wish to start up as a requirement for the test.
@@ -35,11 +35,21 @@ namespace xAPI
 
       public override void Before(MethodInfo methodUnderTest)
       {
+
+         
          process = new Process();
          process.StartInfo.UseShellExecute = true;
          process.StartInfo.FileName = "dotnet";
          process.StartInfo.Arguments = $"run --project \"{projectPath}\"";
          var started = process.Start();
+
+         var projectName = projectPath.Split('\\').Last();
+         var launchSettings = File.ReadAllText(@$"{projectPath}\Properties\launchSettings.json");
+         
+         dynamic settings = JsonConvert.DeserializeObject<dynamic>(launchSettings);
+         var applicationUrls = (string)(settings.profiles[projectName].applicationUrl);
+         var applicationUrl = applicationUrls.Split(';').First();
+          
       }
 
       public override void After(MethodInfo methodUnderTest)
