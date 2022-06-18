@@ -8,14 +8,16 @@ namespace xAPI.Clients
 {
    internal class xAPIHttpClient : IHttpClient
    {
+      private string baseUrl;
+      private string route;
 
-      public xAPIHttpClient(string baseUrl)
+      public xAPIHttpClient(string baseUrl, string route)
       {
 
       }
 
       /// <inheritdoc/>
-      public T Get<T>(string route)
+      public T Get<T>()
       {
          throw new NotImplementedException();
       }

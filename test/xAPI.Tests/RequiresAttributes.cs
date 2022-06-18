@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Xunit;
 using Newtonsoft.Json;
 using xAPI.Test.SampleProject.Data;
+using xAPI.DataAttributes;
+using xAPI.Clients;
 
 namespace xAPI.Tests
 {
@@ -14,8 +16,17 @@ namespace xAPI.Tests
    public class RequiresAttributes
    {
 
+      [Theory]
+      [HttpClientData("helloworld")]
+      public void ClientTest(IHttpClient client)
+      {
+         var data = client.Get<HelloWorldData>();
+         Assert.Equal("Sean!", data.Name);
+         Assert.Equal("Hello, man!", data.Greeting);
+      }
+
       [Fact]
-      public async void HttpTest()
+      /*public async void HttpTest()
       {
          HttpClient client = new HttpClient();
          var response = await client.GetAsync("https://localhost:7199/helloworld");
@@ -26,7 +37,7 @@ namespace xAPI.Tests
 
          Assert.Equal("Sean!", data.Name);
          Assert.Equal("Hello, man!", data.Greeting);
-      }
+      } */
 
    }
 }

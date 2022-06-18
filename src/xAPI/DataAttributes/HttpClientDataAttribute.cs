@@ -8,10 +8,17 @@ using Xunit.Sdk;
 
 namespace xAPI.DataAttributes
 {
-   [DataDiscoverer(typeof(HttpClientDataDiscoverer), "xAPI.DataAttributes")]
+   [DataDiscoverer("HttpClientDataDiscoverer", "xAPI.DataAttributes")]
    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
    public sealed class HttpClientDataAttribute : DataAttribute
    {
+      private string route;
+
+      public HttpClientDataAttribute(string route)
+      {
+         this.route = route;
+      }
+
       public override IEnumerable<object[]> GetData(MethodInfo testMethod)
       {
          throw new NotImplementedException();

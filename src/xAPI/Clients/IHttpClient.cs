@@ -13,9 +13,7 @@ namespace xAPI.Clients
       /// 
       /// </summary>
       /// <typeparam name="T">The type of data to deserialize into</typeparam>
-      /// <param name="route">the route relative to the clients base URL we are grabbing</param>
-      /// <returns>the data deserialized via Json through this client</returns>
-      T Get<T>(string route);
+      T Get<T>();
 
    }
 }

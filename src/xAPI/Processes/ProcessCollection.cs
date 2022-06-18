@@ -30,7 +30,7 @@ namespace xAPI.Processes
       /// to the given project name.
       /// </summary>
       /// <param name="projectName"></param>
-      public IHttpClient GetClient(string projectName)
+      public HttpClient GetClient(string projectName)
       {
          return null;
       }
