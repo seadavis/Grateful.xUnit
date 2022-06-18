@@ -9,14 +9,7 @@ using xAPI.Clients;
 
 namespace xAPI.Processes
 {
-   internal enum ProcessState
-   {
-      Starting,
-      Started,
-      Stopping,
-      Stopped
-   }
-
+  
    /// <summary>
    /// Provides the methods required to,
    /// run the ASP.NET process that is currently
@@ -44,7 +37,6 @@ namespace xAPI.Processes
       internal string ProjectFileName { get; set; }
 
       internal HttpClient Client { get; private set; }
-      internal ProcessState CurrentState { get; private set; }
 
       #endregion
 
@@ -52,7 +44,7 @@ namespace xAPI.Processes
 
       public ProcessRunner()
       {
-         CurrentState = ProcessState.Stopped;
+         
       }
 
       #endregion
