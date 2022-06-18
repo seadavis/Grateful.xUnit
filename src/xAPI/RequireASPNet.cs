@@ -30,13 +30,11 @@ namespace xAPI
          process.StartInfo.FileName = "dotnet";
          process.StartInfo.Arguments = $"run --project \"{FilePathProjectFile}\"";
          var started = process.Start();
-
-         int test = 30;
       }
 
       public override void After(MethodInfo methodUnderTest)
       {
-         //process.Kill();
+         process.Kill();
       }
 
    }
