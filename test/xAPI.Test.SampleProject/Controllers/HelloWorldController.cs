@@ -18,7 +18,7 @@ namespace xAPI.Test.SampleProject.Controllers
          return new HelloWorldData()
          {
             Greeting = "Hello, man!",
-            Name = "Sean"
+            Name = "Sean!"
          };
       }
    }

@@ -24,7 +24,7 @@ namespace xAPI.Tests
          var responseJson = await response.Content.ReadAsStringAsync();
          var data = JsonConvert.DeserializeObject<HelloWorldData>(responseJson);
 
-         Assert.Equal("Sean", data.Name);
+         Assert.Equal("Sean!", data.Name);
          Assert.Equal("Hello, man!", data.Greeting);
       }
 
