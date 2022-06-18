@@ -24,4 +24,8 @@
     <ProjectReference Include="..\..\src\xAPI\xAPI.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AssertionTests\" />
+  </ItemGroup>
+
 </Project>

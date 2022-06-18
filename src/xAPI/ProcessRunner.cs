@@ -28,7 +28,7 @@ namespace xAPI
 
       /// <summary>
       /// Starts the process running.
-      /// Throws an error is the process is unable to be started for whatever reason.
+      /// Throws an error if the process is unable to be start.
       /// </summary>
       internal void Start()
       {
