@@ -13,7 +13,8 @@ namespace xAPI.Clients
       /// 
       /// </summary>
       /// <typeparam name="T">The type of data to deserialize into</typeparam>
-      Task<T> Get<T>();
+      /// <param name="route">The name of the route we ant to call in the HttpClient</param>
+      Task<T> Get<T>(string route);
 
    }
 }

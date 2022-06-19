@@ -9,23 +9,32 @@ namespace xAPI.Clients
 {
    internal class xAPIHttpClient : IHttpClient
    {
-      private HttpClient _httpClient;
-      private string _route;
+      #region Private Variables
 
-      public xAPIHttpClient(HttpClient client, string route)
+      private HttpClient _httpClient;
+
+      #endregion
+
+      #region Public Constructor
+
+      public xAPIHttpClient(HttpClient client)
       {
          _httpClient = client;
-         _route = route;
+        
       }
+      #endregion
+
+      #region IHttpClient Implmentation
 
       /// <inheritdoc/>
-      public async Task<T> Get<T>()
+      public async Task<T> Get<T>(string route)
       {
-         var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}{_route}");
+         var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}{route}");
          response.EnsureSuccessStatusCode();
          var responseJson = await response.Content.ReadAsStringAsync();
-         var data = JsonConvert.DeserializeObject<T>(responseJson);
-         return data;
+         return JsonConvert.DeserializeObject<T>(responseJson);
       }
+
+      #endregion
    }
 }

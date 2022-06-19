@@ -20,12 +20,6 @@ namespace xAPI.Processes
    {
       #region Private Variables
 
-      // locks around creation of the methods leave and enter
-      private object methodLock = new object();
-
-      // the number of methods currently testing the
-      // given process. 
-      private int openMethods = 0;
       private Process process;
       private string applicationUrl;
 
@@ -74,53 +68,24 @@ namespace xAPI.Processes
       /// that needs to exit before it can be killed.
       /// Throws an error if the process is unable to be start.
       /// </summary>
-      internal void Enter()
+      internal void Start()
       {
-         lock(methodLock)
-         {
-            if(openMethods == 0)
-            {
-               process = new Process();
-               process.StartInfo.UseShellExecute = true;
-               process.StartInfo.FileName = "dotnet";
-               process.StartInfo.Arguments = $"run --project \"{ProjectPath}\"";
-               var started = process.Start();
-
-             
-            }
-            openMethods++;
-         }
-
-      }
-
-
-      /// <summary>
-      /// Returns True if the process is stopped.
-      /// </summary>
-      /// <returns></returns>
-      internal bool IsStopped()
-      {
-         return process.HasExited;
+        
+         process = new Process();
+         process.StartInfo.UseShellExecute = true;
+         process.StartInfo.FileName = "dotnet";
+         process.StartInfo.Arguments = $"run --project \"{ProjectPath}\"";
+         process.Start();
+         
       }
 
       /// <summary>
       /// Leave the method and tell stop the process
       /// if it is the only process left.
       /// </summary>
-      internal void Leave()
+      internal void Kill()
       {
-         lock (methodLock)
-         {
-            if(openMethods == 1)
-            {
-               process.Kill();
-            }
-
-            if (openMethods == 0)
-               return;
-
-            openMethods--;
-         }
+         process.Kill();
       }
 
 
