@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using xAPI.Exceptions;
+using xAPI.Processes;
 
 namespace xAPI.Clients
 {
@@ -11,17 +13,17 @@ namespace xAPI.Clients
    {
       #region Private Variables
 
-      private HttpClient _httpClient;
+      private ProcessRunner _runner;
 
       #endregion
 
       #region Public Constructor
 
-      public xAPIHttpClient(HttpClient client)
+      public xAPIHttpClient(ProcessRunner runner)
       {
-         _httpClient = client;
-        
+         _runner = runner;  
       }
+
       #endregion
 
       #region IHttpClient Implmentation
@@ -29,7 +31,14 @@ namespace xAPI.Clients
       /// <inheritdoc/>
       public async Task<HttpResponse<T>> Get<T>(string route)
       {
-         var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}{route}");
+         var response = await _runner.Client.GetAsync($"{_runner.Client.BaseAddress}{route}");
+         if (!response.IsSuccessStatusCode)
+         {
+            var latestErrorMessage = _runner.CheckForLatestFailure();
+            if (latestErrorMessage != null)
+               throw new ServerSideException(latestErrorMessage);
+         }
+
          var responseJson = await response.Content.ReadAsStringAsync();
          return new HttpResponse<T>()
          {

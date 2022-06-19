@@ -4,6 +4,7 @@ using Xunit;
 using System.Threading;
 using System.Threading.Tasks;
 using System;
+using xAPI.Test.SampleProject.MissingInterface;
 
 namespace xAPI.Tests
 {
@@ -18,10 +19,44 @@ namespace xAPI.Tests
       [Fact]
       public async Task OnBuildErrorGettingClientThrowsException()
       {
-         var sut = new FailingBuildFixture();
-         await Task.Delay(new TimeSpan(0, 0, 15));
-         Assert.Throws<StartingProcessException>(() => sut.Client);
+         using (var sut = new FailingBuildFixture())
+         {
+            await Task.Delay(new TimeSpan(0, 0, 15));
+            Assert.Throws<StartingProcessException>(() => sut.Client);
+         } 
       }
 
+      [Fact]
+      public async Task OnControllerErrorGetThrowsException()
+      {
+         using (var sut = new ControllerFailureFixture())
+         {
+            await Assert.ThrowsAsync<ServerSideException>(async () =>
+            {
+               await sut.Client.Get<WeatherForecast>("weatherforecast");
+            });
+         }
+         
+      }
+
+      [Fact]
+      public async Task OnControllerErrorGetMultipleTimesThrowsExceptions()
+      {
+         using (var sut = new ControllerFailureFixture())
+         {
+            await Assert.ThrowsAsync<ServerSideException>(async () =>
+            {
+               await sut.Client.Get<WeatherForecast>("weatherforecast");
+            });
+
+            await Assert.ThrowsAsync<ServerSideException>(async () =>
+            {
+               await sut.Client.Get<WeatherForecast>("weatherforecast");
+            });
+         }
+         
+      }
+
+     
    }
 }

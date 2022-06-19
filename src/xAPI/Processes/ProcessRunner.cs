@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using Newtonsoft.Json;
 using xAPI.Exceptions;
 
@@ -16,6 +17,8 @@ namespace xAPI.Processes
 
       private Process? process;
       private string applicationUrl;
+      private int greatestFailureLine = 0;
+      private List<string?> currentOutput;
 
       #endregion
 
@@ -29,8 +32,6 @@ namespace xAPI.Processes
 
       internal HttpClient Client { get; private set; }
 
-      internal string? ErrorMessage { get; private set; }
-
       #endregion
 
       #region Constructor
@@ -38,6 +39,7 @@ namespace xAPI.Processes
       public ProcessRunner(string projectPath)
       {
          ProjectPath = projectPath;
+         currentOutput = new List<string?>();
 
          var projectName = ProjectPath.Split('\\').Last();
          var launchSettingsFilePath = @$"{ProjectPath}\Properties\launchSettings.json";
@@ -65,8 +67,6 @@ namespace xAPI.Processes
 
       #region Internal Methods
 
-
-
       /// <summary>
       /// Starts the process running and constructs the corresponding
       /// HttpClient if no process is running.
@@ -83,11 +83,61 @@ namespace xAPI.Processes
          process.StartInfo.RedirectStandardInput = true;
          process.StartInfo.RedirectStandardError = true;
          process.EnableRaisingEvents = true;
+         process.OutputDataReceived += Process_OutputReceived;
          process.Start();
-         process.Exited += Process_Exited;
+         process.BeginOutputReadLine();
+
       }
 
-      
+      /// <summary>
+      /// Checks for the latest unseen failure
+      /// once the failure has been seen from this method
+      /// it cannot be called again.
+      /// </summary>
+      /// <returns></returns>
+      internal string? CheckForLatestFailure()
+      {
+         if(process == null)
+            return null;
+
+         if (greatestFailureLine == currentOutput.Count - 1)
+            return null;
+
+         var newestOutput = currentOutput.Take(new Range(greatestFailureLine, currentOutput.Count)).ToArray();
+         var firstFailLine = Array.FindIndex(newestOutput, 0, newestOutput.Length, s => s?.StartsWith("fail") ?? false);
+
+         if(firstFailLine >= 0)
+         {
+            var lastFailLine = Array.FindIndex(newestOutput, 
+                                               firstFailLine + 1, 
+                                               newestOutput.Length - (firstFailLine + 1), 
+                                               s => !(s?.StartsWith(" ") ?? false)) - 1;
+
+            if (lastFailLine < 0)
+               lastFailLine = newestOutput.Length - 1;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for (int i = firstFailLine; i <= lastFailLine; i++)
+            {
+               stringBuilder.AppendLine(newestOutput[i]);
+            }
+
+            greatestFailureLine = lastFailLine;
+            return stringBuilder.ToString();
+         }
+
+         return null;
+      }
+
+      internal bool HasExited()
+      {
+         return process?.HasExited ?? false;
+      }
+
+      internal string GetOutput()
+      {
+         return string.Join(Environment.NewLine, currentOutput);
+      }
 
       /// <summary>
       /// Leave the method and tell stop the process
@@ -103,15 +153,9 @@ namespace xAPI.Processes
 
       #region Private Methods
 
-      private void Process_Exited(object? sender, EventArgs e)
+      private void Process_OutputReceived(object sender, DataReceivedEventArgs e)
       {
-         if (process == null)
-         {
-            ErrorMessage = $"Process for {ProjectPath} failed to build";
-            return;
-         }
-           
-         ErrorMessage = process.StandardOutput.ReadToEnd();
+         currentOutput.Add(e.Data);
       }
 
       #endregion

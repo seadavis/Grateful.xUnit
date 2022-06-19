@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\xAPI\xAPI.csproj" />
+    <ProjectReference Include="..\xAPI.Test.SampleProject.MissingInterface\xAPI.Test.SampleProject.MissingInterface.csproj" />
     <ProjectReference Include="..\xAPI.Test.SampleProject\xAPI.Test.SampleProject.csproj" />
   </ItemGroup>
 

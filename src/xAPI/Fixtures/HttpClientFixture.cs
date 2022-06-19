@@ -29,9 +29,10 @@ namespace xAPI.Fixtures
       { 
          get 
          {
-            if (_runner.ErrorMessage != null) 
-               throw new StartingProcessException(_runner.ErrorMessage);
-            return new xAPIHttpClient(_runner.Client); 
+            if (_runner.HasExited()) 
+               throw new StartingProcessException(_runner.GetOutput());
+
+            return new xAPIHttpClient(_runner); 
          }
       }
 
