@@ -15,7 +15,6 @@ namespace xAPI.Tests
    {
       private FailingBuildFixture sut;
 
-
       [Fact]
       public async Task OnBuildErrorGettingClientThrowsException()
       {
