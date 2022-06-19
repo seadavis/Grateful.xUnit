@@ -13,12 +13,12 @@ namespace xAPI.Tests
    /// </summary>
    public class PathologicalFixtures
    {
-      private FailingBuildFixture sut;
+    
 
       [Fact]
       public async Task OnBuildErrorGettingClientThrowsException()
       {
-         sut = new FailingBuildFixture();
+         var sut = new FailingBuildFixture();
          await Task.Delay(new TimeSpan(0, 0, 15));
          Assert.Throws<StartingProcessException>(() => sut.Client);
       }
