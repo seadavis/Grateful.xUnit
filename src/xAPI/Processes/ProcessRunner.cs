@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Newtonsoft.Json;
+using xAPI.Exceptions;
 
 namespace xAPI.Processes
 {
@@ -37,7 +38,17 @@ namespace xAPI.Processes
          ProjectPath = projectPath;
 
          var projectName = ProjectPath.Split('\\').Last();
-         var launchSettings = File.ReadAllText(@$"{ProjectPath}\Properties\launchSettings.json");
+         var launchSettingsFilePath = @$"{ProjectPath}\Properties\launchSettings.json";
+         string launchSettings = null;
+
+         try
+         {
+            launchSettings = File.ReadAllText(launchSettingsFilePath);
+         }
+         catch (FileNotFoundException)
+         {
+            throw new ProcessConfigurationException($"xAPI Requires a launchSettings.json file at: {launchSettingsFilePath}");
+         }
 
          dynamic settings = JsonConvert.DeserializeObject<dynamic>(launchSettings);
          var applicationUrls = (string)(settings.profiles[projectName].applicationUrl);

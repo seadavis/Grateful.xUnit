@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -25,10 +25,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\xAPI\xAPI.csproj" />
     <ProjectReference Include="..\xAPI.Test.SampleProject\xAPI.Test.SampleProject.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AssertionTests\" />
   </ItemGroup>
 
 </Project>

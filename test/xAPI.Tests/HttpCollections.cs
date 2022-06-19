@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Xunit;
-using Newtonsoft.Json;
 using xAPI.Test.SampleProject.Data;
 using xAPI.Tests.Collections;
+using xAPI.Extensions;
 
 namespace xAPI.Tests
 {
@@ -25,8 +20,12 @@ namespace xAPI.Tests
       public async Task ClientTest()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
-         Assert.Equal("Sean!", data.Name);
-         Assert.Equal("Hello, man!", data.Greeting);
+         data.ShouldHaveStatus(System.Net.HttpStatusCode.OK)
+            .ShouldHaveDataJsonEqual(new HelloWorldData()
+            {
+               Name = "Sean!",
+               Greeting = "Hello, man!"
+            });
       }
 
       /*
@@ -38,8 +37,12 @@ namespace xAPI.Tests
       public async Task ClientTest_Repeat()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
-         Assert.Equal("Sean!", data.Name);
-         Assert.Equal("Hello, man!", data.Greeting);
+         data.ShouldHaveStatus(System.Net.HttpStatusCode.OK)
+            .ShouldHaveDataJsonEqual(new HelloWorldData()
+            {
+               Name = "Sean!",
+               Greeting = "Hello, man!"
+            });
       }
 
       [Fact]
@@ -47,8 +50,12 @@ namespace xAPI.Tests
       public async Task ClientTest_Repeat2()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
-         Assert.Equal("Sean!", data.Name);
-         Assert.Equal("Hello, man!", data.Greeting);
+         data.ShouldHaveStatus(System.Net.HttpStatusCode.OK)
+            .ShouldHaveDataJsonEqual(new HelloWorldData()
+            {
+               Name = "Sean!",
+               Greeting = "Hello, man!"
+            });
       }
    }
 }

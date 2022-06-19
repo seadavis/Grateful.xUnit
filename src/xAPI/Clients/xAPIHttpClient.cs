@@ -27,12 +27,15 @@ namespace xAPI.Clients
       #region IHttpClient Implmentation
 
       /// <inheritdoc/>
-      public async Task<T> Get<T>(string route)
+      public async Task<HttpResponse<T>> Get<T>(string route)
       {
          var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}{route}");
-         response.EnsureSuccessStatusCode();
          var responseJson = await response.Content.ReadAsStringAsync();
-         return JsonConvert.DeserializeObject<T>(responseJson);
+         return new HttpResponse<T>()
+         {
+            Data = JsonConvert.DeserializeObject<T>(responseJson),
+            Status = response.StatusCode
+         };
       }
 
       #endregion
