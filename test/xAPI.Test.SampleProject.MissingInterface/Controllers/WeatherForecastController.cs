@@ -19,6 +19,12 @@ namespace xAPI.Test.SampleProject.MissingInterface.Controllers
          _logger = logger;
       }
 
+      [HttpPost]
+      public WeatherForecast Post(WeatherForecast f)
+      {
+         return new WeatherForecast();
+      }
+
       [HttpGet]
       public IEnumerable<WeatherForecast> Get()
       {

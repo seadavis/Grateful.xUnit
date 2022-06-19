@@ -27,7 +27,21 @@ namespace xAPI.Tests
             Name = "Sean!",
             Greeting = "Hello, man!"
          });
+      }
 
+      [Fact]
+      public async Task PostTest()
+      {
+         var data = await _fixture.Client.Post<HelloWorldData, HelloWorldData>("helloworld", new HelloWorldData()
+         {
+            Name = "Sean!",
+            Greeting = "Hello, man!"
+         });
+         data.Should().BeOkWithData(new HelloWorldData()
+         {
+            Name = "Sean!",
+            Greeting = "Hello, man!"
+         });
       }
 
       /*

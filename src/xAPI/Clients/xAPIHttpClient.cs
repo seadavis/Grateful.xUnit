@@ -31,7 +31,30 @@ namespace xAPI.Clients
       /// <inheritdoc/>
       public async Task<HttpResponse<T>> Get<T>(string route)
       {
-         var response = await _runner.Client.GetAsync($"{_runner.Client.BaseAddress}{route}");
+         var response = await _runner.Client.GetAsync(BuildAddress(route));
+         return await AnaylzeResponse<T>(response);
+      }
+
+
+      public async Task<HttpResponse<T>> Post<T, P>(string route, P postData)
+      {
+         var json = JsonConvert.SerializeObject(postData);
+         var content = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
+         var response = await _runner.Client.PostAsync(BuildAddress(route), content);
+         return await AnaylzeResponse<T>(response);
+      }
+
+      #endregion
+
+      #region Private Methods
+
+      private string BuildAddress(string route)
+      {
+         return $"{_runner.Client.BaseAddress}{route}";
+      }
+
+      private async Task<HttpResponse<T>> AnaylzeResponse<T>(HttpResponseMessage response)
+      {
          if (!response.IsSuccessStatusCode)
          {
             var latestErrorMessage = _runner.CheckForLatestFailure();

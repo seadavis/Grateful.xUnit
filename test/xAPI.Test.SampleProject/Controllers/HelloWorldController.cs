@@ -12,6 +12,18 @@ namespace xAPI.Test.SampleProject.Controllers
          
       }
 
+      [HttpPost] 
+      public HelloWorldData Post([FromBody] HelloWorldData data)
+      {
+         return data;
+      }
+
+      [HttpDelete]
+      public int Delete(int id)
+      {
+         return id;
+      }
+
       [HttpGet]
       public HelloWorldData Get()
       {

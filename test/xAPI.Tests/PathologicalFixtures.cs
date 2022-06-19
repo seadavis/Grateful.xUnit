@@ -36,7 +36,18 @@ namespace xAPI.Tests
                await sut.Client.Get<WeatherForecast>("weatherforecast");
             });
          }
-         
+      }
+
+      [Fact]
+      public async Task OnControllerErrorPostThrowsException()
+      {
+         using (var sut = new ControllerFailureFixture())
+         {
+            await Assert.ThrowsAsync<ServerSideException>(async () =>
+            {
+               await sut.Client.Post<WeatherForecast, WeatherForecast>("weatherforecast", new WeatherForecast());
+            });
+         }
       }
 
       [Fact]
