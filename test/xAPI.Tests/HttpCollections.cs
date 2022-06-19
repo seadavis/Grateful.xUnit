@@ -3,6 +3,8 @@ using Xunit;
 using xAPI.Test.SampleProject.Data;
 using xAPI.Tests.Collections;
 using xAPI.Extensions;
+using FluentAssertions;
+using xAPI.Assertions;
 
 namespace xAPI.Tests
 {
@@ -20,12 +22,12 @@ namespace xAPI.Tests
       public async Task ClientTest()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
-         data.ShouldHaveStatus(System.Net.HttpStatusCode.OK)
-            .ShouldHaveDataJsonEqual(new HelloWorldData()
-            {
-               Name = "Sean!",
-               Greeting = "Hello, man!"
-            });
+         data.Should().BeOkWithData(new HelloWorldData()
+         {
+            Name = "Sean!",
+            Greeting = "Hello, man!"
+         });
+
       }
 
       /*
@@ -37,12 +39,11 @@ namespace xAPI.Tests
       public async Task ClientTest_Repeat()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
-         data.ShouldHaveStatus(System.Net.HttpStatusCode.OK)
-            .ShouldHaveDataJsonEqual(new HelloWorldData()
-            {
-               Name = "Sean!",
-               Greeting = "Hello, man!"
-            });
+         data.Should().HaveCodeAndData(System.Net.HttpStatusCode.OK, new HelloWorldData()
+         {
+            Name = "Sean!",
+            Greeting = "Hello, man!"
+         });
       }
 
       [Fact]
@@ -50,12 +51,11 @@ namespace xAPI.Tests
       public async Task ClientTest_Repeat2()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
-         data.ShouldHaveStatus(System.Net.HttpStatusCode.OK)
-            .ShouldHaveDataJsonEqual(new HelloWorldData()
-            {
-               Name = "Sean!",
-               Greeting = "Hello, man!"
-            });
+         data.Should().HaveCodeAndData(System.Net.HttpStatusCode.OK, new HelloWorldData()
+         {
+            Name = "Sean!",
+            Greeting = "Hello, man!"
+         });
       }
    }
 }
