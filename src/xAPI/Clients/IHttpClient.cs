@@ -13,7 +13,7 @@ namespace xAPI.Clients
       /// 
       /// </summary>
       /// <typeparam name="T">The type of data to deserialize into</typeparam>
-      T Get<T>();
+      Task<T> Get<T>();
 
    }
 }

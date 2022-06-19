@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,18 +9,23 @@ namespace xAPI.Clients
 {
    internal class xAPIHttpClient : IHttpClient
    {
-      private string baseUrl;
-      private string route;
+      private HttpClient _httpClient;
+      private string _route;
 
-      public xAPIHttpClient(string baseUrl, string route)
+      public xAPIHttpClient(HttpClient client, string route)
       {
-
+         _httpClient = client;
+         _route = route;
       }
 
       /// <inheritdoc/>
-      public T Get<T>()
+      public async Task<T> Get<T>()
       {
-         throw new NotImplementedException();
+         var response = await _httpClient.GetAsync($"{_httpClient.BaseAddress}{_route}");
+         response.EnsureSuccessStatusCode();
+         var responseJson = await response.Content.ReadAsStringAsync();
+         var data = JsonConvert.DeserializeObject<T>(responseJson);
+         return data;
       }
    }
 }

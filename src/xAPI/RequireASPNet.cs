@@ -2,6 +2,7 @@
 using System.Reflection;
 using Xunit.Sdk;
 using Newtonsoft.Json;
+using xAPI.Processes;
 
 namespace xAPI
 {
@@ -10,8 +11,8 @@ namespace xAPI
    {
 
       private Process process;
-      private string projectPath;
-
+      
+      public string ProjectPath { get; }
 
       /// <summary>
       /// Starts the ASP.Net process and builds the corresponding HttpClient.
@@ -30,31 +31,17 @@ namespace xAPI
       /// </param>
       public RequireASPNet(string projectPath)
       {
-         this.projectPath = projectPath;
+         ProjectPath = projectPath;
       }
 
       public override void Before(MethodInfo methodUnderTest)
       {
-
-         
-         process = new Process();
-         process.StartInfo.UseShellExecute = true;
-         process.StartInfo.FileName = "dotnet";
-         process.StartInfo.Arguments = $"run --project \"{projectPath}\"";
-         var started = process.Start();
-
-         var projectName = projectPath.Split('\\').Last();
-         var launchSettings = File.ReadAllText(@$"{projectPath}\Properties\launchSettings.json");
-         
-         dynamic settings = JsonConvert.DeserializeObject<dynamic>(launchSettings);
-         var applicationUrls = (string)(settings.profiles[projectName].applicationUrl);
-         var applicationUrl = applicationUrls.Split(';').First();
-          
+         ProcessCollection.Instance.Enter(ProjectPath); 
       }
 
       public override void After(MethodInfo methodUnderTest)
       {
-         process.Kill();
+         ProcessCollection.Instance.Leave(ProjectPath);
       }
 
    }

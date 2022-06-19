@@ -18,15 +18,15 @@ namespace xAPI.Tests
 
       [Theory]
       [HttpClientData("helloworld")]
-      public void ClientTest(IHttpClient client)
+      public async Task ClientTest(IHttpClient client)
       {
-         var data = client.Get<HelloWorldData>();
+         var data = await client.Get<HelloWorldData>();
          Assert.Equal("Sean!", data.Name);
          Assert.Equal("Hello, man!", data.Greeting);
       }
 
-      [Fact]
-      /*public async void HttpTest()
+      /*[Fact]
+      public async void HttpTest()
       {
          HttpClient client = new HttpClient();
          var response = await client.GetAsync("https://localhost:7199/helloworld");

@@ -23,7 +23,7 @@ namespace xAPI.Processes
       private static readonly Lazy<ProcessCollection> lazy =
         new Lazy<ProcessCollection>(() => new ProcessCollection());
 
-      public ProcessCollection Instance { get { return lazy.Value; } }
+      public static ProcessCollection Instance { get { return lazy.Value; } }
 
       /// <summary>
       /// Gets the client that corresponds
@@ -32,31 +32,67 @@ namespace xAPI.Processes
       /// <param name="projectName"></param>
       public HttpClient GetClient(string projectName)
       {
+         ProcessRunner runner = null;
+         if (runners.ContainsKey(projectName))
+         {
+            runners.TryGetValue(projectName, out runner);
+            return runner.Client;
+         }
+         else
+         {
+            runner = new ProcessRunner(projectName);
+            runners.AddOrUpdate(projectName, runner, (n, p) => runner);
+            return runner.Client;
+         }
+
          return null;
       }
 
       /// <summary>
       /// enters then given project for the given method
       /// </summary>
-      /// <param name="projectName"></param>
+      /// <param name="projectPath"></param>
       /// <param name="usingMethod"></param>
-      public void Enter(string projectName, MethodInfo usingMethod)
+      public void Enter(string projectName)
       {
          // build a new process runner if it doesn't already exist
          // go in and add it to the list of methods being run.
+
+         ProcessRunner runner = null;
+         if (!runners.ContainsKey(projectName))
+         {
+            runner = new ProcessRunner(projectName);
+            runners.AddOrUpdate(projectName, runner, (n, p) => runner);
+         }
+         else
+         {
+            runners.TryGetValue(projectName, out runner);
+         }
+
+         runner.Enter();
+
       }
 
       /// <summary>
       /// Leave the given project for the given method.
       /// Shutting down the process if it is the last one.
       /// </summary>
-      /// <param name="projectName"></param>
+      /// <param name="projectPath"></param>
       /// <param name="usingMethod"></param>
-      public void Leave(string projectName, MethodInfo usingMethod)
+      public void Leave(string projectName)
       {
-         // Call leave
-         // check if the process is killed
-         // if it is remove it from runners.
+         ProcessRunner runner = null;
+         if (runners.ContainsKey(projectName))
+         {
+            runners.TryGetValue(projectName, out runner);
+            runner.Leave();
+
+            if (runner.IsStopped())
+            {
+               runners.Remove(projectName, out runner);
+            }
+         }
+
       }
 
    }
