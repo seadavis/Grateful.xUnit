@@ -14,7 +14,7 @@ namespace xAPI.Processes
    {
       #region Private Variables
 
-      private Process process;
+      private Process? process;
       private string applicationUrl;
 
       #endregion
@@ -74,7 +74,6 @@ namespace xAPI.Processes
       /// </summary>
       internal void Start()
       {
-        
          process = new Process();
          process.StartInfo.UseShellExecute = true;
          process.StartInfo.FileName = "dotnet";
@@ -89,7 +88,7 @@ namespace xAPI.Processes
       /// </summary>
       internal void Kill()
       {
-         process.Kill();
+         process?.Kill();
       }
 
 
