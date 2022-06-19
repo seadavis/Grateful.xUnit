@@ -50,7 +50,7 @@ namespace xAPI.Processes
             throw new ProcessConfigurationException($"xAPI Requires a launchSettings.json file at: {launchSettingsFilePath}");
          }
 
-         dynamic settings = JsonConvert.DeserializeObject<dynamic>(launchSettings);
+         dynamic? settings = JsonConvert.DeserializeObject<dynamic>(launchSettings);
          var applicationUrls = (string)(settings.profiles[projectName].applicationUrl);
          applicationUrl = applicationUrls.Split(';').First();
          Client = new HttpClient()
