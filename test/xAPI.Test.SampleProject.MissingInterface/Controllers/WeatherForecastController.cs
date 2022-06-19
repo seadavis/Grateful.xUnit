@@ -25,6 +25,12 @@ namespace xAPI.Test.SampleProject.MissingInterface.Controllers
          return new WeatherForecast();
       }
 
+      [HttpDelete]
+      public void Delete()
+      {
+
+      }
+
       [HttpGet]
       public IEnumerable<WeatherForecast> Get()
       {

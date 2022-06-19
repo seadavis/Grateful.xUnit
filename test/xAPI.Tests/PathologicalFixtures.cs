@@ -39,6 +39,18 @@ namespace xAPI.Tests
       }
 
       [Fact]
+      public async Task OnControllerErrorDeleteThrowsException()
+      {
+         using (var sut = new ControllerFailureFixture())
+         {
+            await Assert.ThrowsAsync<ServerSideException>(async () =>
+            {
+               await sut.Client.Delete("weatherforecast");
+            });
+         }
+      }
+
+      [Fact]
       public async Task OnControllerErrorPostThrowsException()
       {
          using (var sut = new ControllerFailureFixture())

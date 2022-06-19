@@ -5,6 +5,7 @@ using xAPI.Tests.Collections;
 using xAPI.Extensions;
 using FluentAssertions;
 using xAPI.Assertions;
+using System.Net;
 
 namespace xAPI.Tests
 {
@@ -19,7 +20,7 @@ namespace xAPI.Tests
       }
 
       [Fact]
-      public async Task ClientTest()
+      public async Task Get()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
          data.Should().BeOkWithData(new HelloWorldData()
@@ -30,7 +31,14 @@ namespace xAPI.Tests
       }
 
       [Fact]
-      public async Task PostTest()
+      public async Task Delete()
+      {
+         var statusCode = await _fixture.Client.Delete("helloworld");
+         Assert.Equal(HttpStatusCode.OK, statusCode);
+      }
+
+      [Fact]
+      public async Task Post()
       {
          var data = await _fixture.Client.Post<HelloWorldData, HelloWorldData>("helloworld", new HelloWorldData()
          {
@@ -50,7 +58,7 @@ namespace xAPI.Tests
        */
 
       [Fact]
-      public async Task ClientTest_Repeat()
+      public async Task  Get_Repeat()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
          data.Should().HaveCodeAndData(System.Net.HttpStatusCode.OK, new HelloWorldData()
@@ -62,7 +70,7 @@ namespace xAPI.Tests
 
       [Fact]
     
-      public async Task ClientTest_Repeat2()
+      public async Task Get_Repeat2()
       {
          var data = await _fixture.Client.Get<HelloWorldData>("helloworld");
          data.Should().HaveCodeAndData(System.Net.HttpStatusCode.OK, new HelloWorldData()

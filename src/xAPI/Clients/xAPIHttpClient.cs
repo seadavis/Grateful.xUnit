@@ -1,11 +1,8 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using xAPI.Exceptions;
 using xAPI.Processes;
+using System.Net;
 
 namespace xAPI.Clients
 {
@@ -35,7 +32,7 @@ namespace xAPI.Clients
          return await AnaylzeResponse<T>(response);
       }
 
-
+      /// <inheritdoc/>
       public async Task<HttpResponse<T>> Post<T, P>(string route, P postData)
       {
          var json = JsonConvert.SerializeObject(postData);
@@ -43,6 +40,14 @@ namespace xAPI.Clients
          var response = await _runner.Client.PostAsync(BuildAddress(route), content);
          return await AnaylzeResponse<T>(response);
       }
+      /// <inheritdoc/>
+      public async Task<HttpStatusCode> Delete(string route)
+      {
+         var response = await _runner.Client.DeleteAsync(BuildAddress(route));
+         CheckForErrors(response);
+         return response.StatusCode;
+      }
+
 
       #endregion
 
@@ -53,7 +58,7 @@ namespace xAPI.Clients
          return $"{_runner.Client.BaseAddress}{route}";
       }
 
-      private async Task<HttpResponse<T>> AnaylzeResponse<T>(HttpResponseMessage response)
+      private void CheckForErrors(HttpResponseMessage response)
       {
          if (!response.IsSuccessStatusCode)
          {
@@ -61,6 +66,11 @@ namespace xAPI.Clients
             if (latestErrorMessage != null)
                throw new ServerSideException(latestErrorMessage);
          }
+      }
+
+      private async Task<HttpResponse<T>> AnaylzeResponse<T>(HttpResponseMessage response)
+      {
+         CheckForErrors(response);
 
          var responseJson = await response.Content.ReadAsStringAsync();
          return new HttpResponse<T>()
@@ -70,6 +80,7 @@ namespace xAPI.Clients
          };
       }
 
+    
       #endregion
    }
 }

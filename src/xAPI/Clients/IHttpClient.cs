@@ -1,4 +1,6 @@
-﻿namespace xAPI.Clients
+﻿using System.Net;
+
+namespace xAPI.Clients
 {
    public interface IHttpClient
    {
@@ -18,5 +20,13 @@
       /// <param name="route">the route we are posting to</param>
       /// <returns>the response from the server.</returns>
       Task<HttpResponse<T>> Post<T, P>(string route, P postData);
+
+      /// <summary>
+      /// Sends a Request of type delete
+      /// to the server.
+      /// </summary>
+      /// <param name="route">the route we are sending data to, just appended to the path</param>
+      /// <returns>the response data</returns>
+      Task<HttpStatusCode> Delete(string route);
    }
 }

@@ -19,9 +19,9 @@ namespace xAPI.Test.SampleProject.Controllers
       }
 
       [HttpDelete]
-      public int Delete(int id)
+      public int Delete()
       {
-         return id;
+         return 0;
       }
 
       [HttpGet]
