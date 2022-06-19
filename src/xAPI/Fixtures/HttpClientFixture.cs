@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using xAPI.Clients;
+using xAPI.Exceptions;
 using xAPI.Processes;
 
 namespace xAPI.Fixtures
@@ -20,7 +21,19 @@ namespace xAPI.Fixtures
 
       #region Properties
 
-      public IHttpClient Client { get => new xAPIHttpClient(_runner.Client); }
+      /// <summary>
+      /// The HttpClient.
+      /// Throws an error if the process has exited in this amount of time.
+      /// </summary>
+      public IHttpClient Client 
+      { 
+         get 
+         {
+            if (_runner.ErrorMessage != null) 
+               throw new StartingProcessException(_runner.ErrorMessage);
+            return new xAPIHttpClient(_runner.Client); 
+         }
+      }
 
       #endregion
 

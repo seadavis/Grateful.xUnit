@@ -29,6 +29,8 @@ namespace xAPI.Processes
 
       internal HttpClient Client { get; private set; }
 
+      internal string? ErrorMessage { get; private set; }
+
       #endregion
 
       #region Constructor
@@ -75,12 +77,17 @@ namespace xAPI.Processes
       internal void Start()
       {
          process = new Process();
-         process.StartInfo.UseShellExecute = true;
          process.StartInfo.FileName = "dotnet";
          process.StartInfo.Arguments = $"run --project \"{ProjectPath}\"";
+         process.StartInfo.RedirectStandardOutput = true;
+         process.StartInfo.RedirectStandardInput = true;
+         process.StartInfo.RedirectStandardError = true;
+         process.EnableRaisingEvents = true;
          process.Start();
-         
+         process.Exited += Process_Exited;
       }
+
+      
 
       /// <summary>
       /// Leave the method and tell stop the process
@@ -91,6 +98,21 @@ namespace xAPI.Processes
          process?.Kill();
       }
 
+
+      #endregion
+
+      #region Private Methods
+
+      private void Process_Exited(object? sender, EventArgs e)
+      {
+         if (process == null)
+         {
+            ErrorMessage = $"Process for {ProjectPath} failed to build";
+            return;
+         }
+           
+         ErrorMessage = process.StandardOutput.ReadToEnd();
+      }
 
       #endregion
 
