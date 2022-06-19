@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace xAPI.Test.SampleProject.Controllers
+namespace xAPI.Test.Sample.Project.BuildFail.Controllers
 {
    [ApiController]
    [Route("[controller]")]
