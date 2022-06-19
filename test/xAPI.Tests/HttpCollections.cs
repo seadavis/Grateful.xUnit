@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Xunit;
 using Newtonsoft.Json;
 using xAPI.Test.SampleProject.Data;
-using xAPI.Clients;
-using xAPI.Fixtures;
 using xAPI.Tests.Collections;
 
 namespace xAPI.Tests
