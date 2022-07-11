@@ -74,28 +74,11 @@ namespace xAPI.Clients
       /// <returns></returns>
       private async Task<String> Authorize()
       {
-         AuthenticationResult? authenticationResult = null;
-
-         try
-         {
-            string[] scopes = new string[] { $"api://{_runner.ClientConfig.APIClientId}/.default" };
-            authenticationResult = await _runner.Application.AcquireTokenForClient(scopes)
-                              .ExecuteAsync();
-         }
-         catch (MsalUiRequiredException ex)
-         {
-            // The application doesn't have sufficient permissions.
-            // - Did you declare enough app permissions during app creation?
-            // - Did the tenant admin grant permissions to the application?
-            int test = 5;
-         }
-         catch (MsalServiceException ex) when (ex.Message.Contains("AADSTS70011"))
-         {
-            // Invalid scope. The scope has to be in the form "https://resourceurl/.default"
-            // Mitigation: Change the scope to be as expected.
-            int test = 15;
-         }
-
+       
+         string[] scopes = new string[] { $"api://{_runner.ClientConfig.APIClientId}/.default" };
+         var authenticationResult = await _runner.Application.AcquireTokenForClient(scopes)
+                           .ExecuteAsync();
+         
 
          var token = authenticationResult?.AccessToken;
          if (token == null)
