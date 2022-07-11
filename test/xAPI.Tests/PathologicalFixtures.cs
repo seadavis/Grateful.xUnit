@@ -12,6 +12,7 @@ namespace xAPI.Tests
    /// Class that is used to test failures
    /// of a fixture that points to a project that fails to even build.
    /// </summary>
+   [Collection("Sequential")]
    public class PathologicalFixtures
    {
     

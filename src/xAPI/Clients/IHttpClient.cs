@@ -15,6 +15,10 @@ namespace xAPI.Clients
       /// <returns>the response to be used</returns>
       Task<HttpResponse<T>> GetAuthorized<T>(string route);
 
+      Task<HttpStatusCode> DeleteAuthorized(string route);
+
+      Task<HttpResponse<T>> PostAuthorized<T, P>(string route, P postData);
+
       /// <summary>
       /// 
       /// </summary>
