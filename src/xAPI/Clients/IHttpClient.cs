@@ -6,6 +6,16 @@ namespace xAPI.Clients
    {
 
       /// <summary>
+      /// Calls a GET method at the given route, 
+      /// Authorizing it according to the data provided at
+      /// 
+      /// </summary>
+      /// <typeparam name="T">the type of data contained in the response</typeparam>
+      /// <param name="route">the name of the route we want to call in the HttpClient</param>
+      /// <returns>the response to be used</returns>
+      Task<HttpResponse<T>> GetAuthorized<T>(string route);
+
+      /// <summary>
       /// 
       /// </summary>
       /// <typeparam name="T">The type of data to deserialize into</typeparam>

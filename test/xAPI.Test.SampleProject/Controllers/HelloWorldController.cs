@@ -1,15 +1,50 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using xAPI.Test.SampleProject.Data;
 
 namespace xAPI.Test.SampleProject.Controllers
 {
+  
    [ApiController]
    [Route("[controller]")]
    public class HelloWorldController : ControllerBase
    {
       public HelloWorldController()
       {
-         
+
+      }
+
+      [Authorize]
+      [HttpGet("api/auth")]
+      public HelloWorldData GetAuthorized()
+      {
+         return new HelloWorldData()
+         {
+            Greeting = "Salutations!",
+            Name = "Authorized User!"
+         };
+      }
+
+      [Authorize]
+      [HttpPost("api/auth")]
+      public HelloWorldData PostAuthorized()
+      {
+         return new HelloWorldData()
+         {
+            Greeting = "Salutations!",
+            Name = "Post Authorized User!"
+         };
+      }
+
+      [Authorize]
+      [HttpDelete("api/auth")]
+      public HelloWorldData DeleteAuthorized()
+      {
+         return new HelloWorldData()
+         {
+            Greeting = "Salutations!",
+            Name = "Delete Authorized User!"
+         };
       }
 
       [HttpPost] 

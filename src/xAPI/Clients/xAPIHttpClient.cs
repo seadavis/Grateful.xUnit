@@ -3,6 +3,8 @@ using System.Text;
 using xAPI.Exceptions;
 using xAPI.Processes;
 using System.Net;
+using Microsoft.Identity.Client;
+using System.Net.Http.Headers;
 
 namespace xAPI.Clients
 {
@@ -28,8 +30,12 @@ namespace xAPI.Clients
       /// <inheritdoc/>
       public async Task<HttpResponse<T>> Get<T>(string route)
       {
-         var response = await _runner.Client.GetAsync(BuildAddress(route));
-         return await AnaylzeResponse<T>(response);
+         using(var client = _runner.CreateClient())
+         {
+            var response = await client.GetAsync(route);
+            return await AnaylzeResponse<T>(response);
+         }
+        
       }
 
       /// <inheritdoc/>
@@ -37,26 +43,70 @@ namespace xAPI.Clients
       {
          var json = JsonConvert.SerializeObject(postData);
          var content = new System.Net.Http.StringContent(json, Encoding.UTF8, "application/json");
-         var response = await _runner.Client.PostAsync(BuildAddress(route), content);
-         return await AnaylzeResponse<T>(response);
+
+         using (var client = _runner.CreateClient())
+         {
+            var response = await client.PostAsync(route, content);
+            return await AnaylzeResponse<T>(response);
+         }
+
       }
       /// <inheritdoc/>
       public async Task<HttpStatusCode> Delete(string route)
       {
-         var response = await _runner.Client.DeleteAsync(BuildAddress(route));
-         CheckForErrors(response);
-         return response.StatusCode;
+         using (var client = _runner.CreateClient())
+         {
+            var response = await client.DeleteAsync(route);
+            CheckForErrors(response);
+            return response.StatusCode;
+         }
       }
+
+      // <inheritdoc />
+      public async Task<HttpResponse<T>> GetAuthorized<T>(string route)
+      {
+         AuthenticationResult? authenticationResult = null;
+
+         try
+         {
+            string[] scopes = new string[] { $"api://{_runner.ClientConfig.APIClientId}/.default" };
+            authenticationResult = await _runner.Application.AcquireTokenForClient(scopes)
+                              .ExecuteAsync();
+         }
+         catch (MsalUiRequiredException ex)
+         {
+            // The application doesn't have sufficient permissions.
+            // - Did you declare enough app permissions during app creation?
+            // - Did the tenant admin grant permissions to the application?
+            int test = 5;
+         }
+         catch (MsalServiceException ex) when (ex.Message.Contains("AADSTS70011"))
+         {
+            // Invalid scope. The scope has to be in the form "https://resourceurl/.default"
+            // Mitigation: Change the scope to be as expected.
+            int test = 15;
+         }
+
+         
+         var token = authenticationResult?.AccessToken;
+         if (token == null)
+            throw new Exception("Missing Access Token");
+        
+         using(var client = _runner.CreateClient(new AuthenticationHeaderValue("Bearer", token)))
+         {
+            var response = await client.GetAsync(route);
+            return await AnaylzeResponse<T>(response);
+         }
+      }
+
+
 
 
       #endregion
 
       #region Private Methods
 
-      private string BuildAddress(string route)
-      {
-         return $"{_runner.Client.BaseAddress}{route}";
-      }
+      
 
       private void CheckForErrors(HttpResponseMessage response)
       {
@@ -80,7 +130,7 @@ namespace xAPI.Clients
          };
       }
 
-    
+      
       #endregion
    }
 }

@@ -1,6 +1,9 @@
 ﻿using System.Diagnostics;
+using System.Net.Http.Headers;
 using System.Text;
+using Microsoft.Identity.Client;
 using Newtonsoft.Json;
+using xAPI.Config;
 using xAPI.Exceptions;
 
 namespace xAPI.Processes
@@ -30,7 +33,12 @@ namespace xAPI.Processes
       /// </summary>
       internal string ProjectPath { get; set; }
 
-      internal HttpClient Client { get; private set; }
+      /// <summary>
+      /// Application used for authorization
+      /// </summary>
+      internal IConfidentialClientApplication Application { get; private set; }
+
+      internal ClientConfig ClientConfig { get; private set; }
 
       #endregion
 
@@ -54,13 +62,18 @@ namespace xAPI.Processes
             throw new ProcessConfigurationException($"xAPI Requires a launchSettings.json file at: {launchSettingsFilePath}");
          }
 
+
          dynamic? settings = JsonConvert.DeserializeObject<dynamic>(launchSettings);
          var applicationUrls = (string)(settings.profiles[projectName].applicationUrl);
          applicationUrl = applicationUrls.Split(';').First();
-         Client = new HttpClient()
-         {
-            BaseAddress = new Uri(applicationUrl)
-         };
+         ClientConfig = BuildConfig();
+
+         var authorityUri = new Uri($"https://login.microsoftonline.com/{ClientConfig.TenantId}");
+         Application = ConfidentialClientApplicationBuilder.Create(ClientConfig.AppClientId)
+                                                                              .WithClientSecret(ClientConfig.ClientSecret)
+                                                                              .WithAuthority(authorityUri)
+                                                                              .Build();
+
       }
 
       #endregion
@@ -87,6 +100,37 @@ namespace xAPI.Processes
          process.Start();
          process.BeginOutputReadLine();
 
+      }
+
+      /// <summary>
+      /// Creates a client with 
+      /// an authentication header.
+      /// </summary>
+      /// <param name="authHeader"></param>
+      /// <returns></returns>
+      internal HttpClient CreateClient(AuthenticationHeaderValue authHeader)
+      {
+         var client =  new HttpClient()
+         {
+            BaseAddress = new Uri(applicationUrl)
+         };
+
+         client.DefaultRequestHeaders.Authorization = authHeader;
+         return client;
+      }
+
+      /// <summary>
+      /// Creates an Http Client without any headers.
+      /// Written this way instead of a property
+      /// so that we could add headers every time.
+      /// </summary>
+      /// <returns></returns>
+      internal HttpClient CreateClient()
+      {
+         return new HttpClient()
+         {
+            BaseAddress = new Uri(applicationUrl)
+         };
       }
 
       /// <summary>
@@ -156,6 +200,14 @@ namespace xAPI.Processes
       private void Process_OutputReceived(object sender, DataReceivedEventArgs e)
       {
          currentOutput.Add(e.Data);
+      }
+      
+      private ClientConfig BuildConfig()
+      {
+         var directory = Directory.GetCurrentDirectory();
+         var file = $"{directory}\\test.settings.json";
+         var json = File.ReadAllText(file);
+         return JsonConvert.DeserializeObject<ClientConfig>(json);
       }
 
       #endregion
