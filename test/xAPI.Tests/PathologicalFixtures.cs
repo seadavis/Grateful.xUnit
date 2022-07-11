@@ -8,11 +8,17 @@ using xAPI.Test.SampleProject.MissingInterface;
 
 namespace xAPI.Tests
 {
+   [CollectionDefinition("Serial Collection", DisableParallelization = true)]
+   public class NonParallelCollectionDefinitionClass
+   {
+   }
+
+
    /// <summary>
    /// Class that is used to test failures
    /// of a fixture that points to a project that fails to even build.
    /// </summary>
-   [Collection("Sequential")]
+   [Collection("Serial Collection")]
    public class PathologicalFixtures
    {
     
