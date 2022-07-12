@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using xAPI.Tests.Collections;
 using xAPI.Test.SampleProject.Data;
 using FluentAssertions;
+using System.Net;
 
 namespace xAPI.Tests
 {
@@ -37,7 +38,12 @@ namespace xAPI.Tests
       [Fact]
       public async Task PostAuthorized()
       {
-         var data = await _fixture.Client.GetAuthorized<HelloWorldData>("helloworld/api/auth");
+
+         var data = await _fixture.Client.PostAuthorized<HelloWorldData, HelloWorldData>("helloworld/api/auth", new HelloWorldData()
+         {
+            Name = "Sean!",
+            Greeting = "Hello, man!"
+         });
          data.Should().BeOkWithData(new HelloWorldData()
          {
             Greeting = "Salutations!",
@@ -48,12 +54,8 @@ namespace xAPI.Tests
       [Fact]
       public async Task DeleteAuthorized()
       {
-         var data = await _fixture.Client.GetAuthorized<HelloWorldData>("helloworld/api/auth");
-         data.Should().BeOkWithData(new HelloWorldData()
-         {
-            Greeting = "Salutations!",
-            Name = "Delete Authorized User!"
-         });
+         var statusCode = await _fixture.Client.DeleteAuthorized("helloworld/api/auth");
+         Assert.Equal(HttpStatusCode.OK, statusCode);
       }
 
    }

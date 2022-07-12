@@ -190,6 +190,7 @@ namespace xAPI.Processes
       internal void Kill()
       {
          process?.Kill();
+         process?.WaitForExit();
       }
 
 
