@@ -54,7 +54,7 @@ steps:
   name: 'CopyTestSettings'
   inputs:
     Contents: '**\test.settings.json'
-    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
+    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\bin\Debug\net6.0\'
 
 - task: CopyFiles@2
   name: 'CopyDevSettings'
