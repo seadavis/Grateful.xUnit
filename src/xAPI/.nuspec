@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id></id>
+        <version></version>
+        <description>Enables xUnit to be used for integration testing of ASP.Net Web API's</description>
+        <authors>Sean Davus</authors>
+
+    </metadata>
+</package>

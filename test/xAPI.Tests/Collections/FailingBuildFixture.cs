@@ -7,7 +7,7 @@ namespace xAPI.Tests.Collections
    /// </summary>
    public class FailingBuildFixture : HttpClientFixture
    {
-      public FailingBuildFixture() : base(@"C:\Software Projects\Long Term Projects\xAPI\xAPI\test\xAPI.Test.Sample.Project.BuildFail")
+      public FailingBuildFixture() : base(@"..\..\..\..\xAPI.Test.Sample.Project.BuildFail")
       {
       }
    }

@@ -9,7 +9,7 @@ namespace xAPI.Tests.Collections
 {
    public class WorkingProjectFixture : HttpClientFixture
    {
-      public WorkingProjectFixture() : base(@"C:\Software Projects\Long Term Projects\xAPI\xAPI\test\xAPI.Test.SampleProject")
+      public WorkingProjectFixture() : base(@"..\..\..\..\xAPI.Test.SampleProject")
       {
 
       }
