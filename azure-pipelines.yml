@@ -25,11 +25,13 @@ steps:
 
 - task: DownloadSecureFile@1
   name: testSettings
+  displayName: 'DownloadTestSettings'
   inputs:
     secureFile: 'test.settings.json'
 
 - task: DownloadSecureFile@1
   name: appSettings
+  displayName: 'DownloadAppSettings'
   inputs:
     secureFile: 'appsettings.Development.json'
 
