@@ -22,6 +22,28 @@ steps:
     packageType: 'sdk'
     version: '6.x'
 
+
+- task: DownloadSecureFile@1
+  name: testSettings
+  inputs:
+    secureFile: 'test.settings.json'
+
+- task: DownloadSecureFile@1
+  name: appSettings
+  inputs:
+    secureFile: 'appsettings.Development.json'
+
+- task: CopyFiles@2
+  name: 'CopyTestSettings'
+  inputs:
+    Contents: '$(testSettings.secureFilePath)'
+    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
+
+- task: CopyFiles@2
+  name: 'CopyDevSettings'
+  inputs:
+    Contents: '$(appSettins.secureFilePath)'
+    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
 - task: DotNetCoreCLI@2
   name: 'RestoreNuget'
   inputs:
@@ -41,26 +63,6 @@ steps:
   inputs:
     command: 'build'
     projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
-
-- task: DownloadSecureFile@1
-  inputs:
-    secureFile: 'test.settings.json'
-
-- task: DownloadSecureFile@1
-  inputs:
-    secureFile: 'appsettings.Development.json'
-
-- task: CopyFiles@2
-  name: 'CopyTestSettings'
-  inputs:
-    Contents: '**\test.settings.jpon'
-    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
-
-- task: CopyFiles@2
-  name: 'CopyDevSettings'
-  inputs:
-    Contents: '**\appsettings.Development.json'
-    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
 
 
 - task: DotNetCoreCLI@2
