@@ -53,8 +53,8 @@ steps:
 - task: CopyFiles@2
   name: 'CopyTestSettings'
   inputs:
-    Contents: '**\test.settings.json'
-    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\bin\Debug\net6.0\'
+    Contents: '**\test.settings.jpon'
+    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
 
 - task: CopyFiles@2
   name: 'CopyDevSettings'
