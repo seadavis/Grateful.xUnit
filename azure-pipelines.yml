@@ -22,27 +22,27 @@ steps:
     version: '6.x'
 
 - task: DotNetCoreCLI@2
-  name: 'Restore Nuget'
+  name: 'RestoreNuget'
   inputs:
     command: 'restore'
     feedsToUse: 'select'
     noCache: true
 
 - task: DotNetCoreCLI@2
-  name: 'Build Source'
+  name: 'BuildSource'
   inputs:
     command: 'build'
     projects: '/src/xAPI/xAPI/xAPI*.csproj'
 
 
 - task: DotNetCoreCLI@2
-  name: 'Build Test Projects'
+  name: 'BuildTestProjects'
   inputs:
     command: 'build'
     projects: '/test/xAPI.Tests/xAPI.Tests.csproj'
 
 - task: DotNetCoreCLI@2
-  name: 'Run Tests'
+  name: 'RunTests'
   inputs:
     command: 'test'
     projects: '**/test/xAPI.Tests/xAPI.Tests.csproj'
