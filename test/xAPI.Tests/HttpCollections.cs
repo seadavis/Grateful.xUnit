@@ -48,7 +48,7 @@ namespace xAPI.Tests
          data.Should().BeOkWithData(new HelloWorldData()
          {
             Name = "Sean!",
-            Greeting = "Hello, man!"
+            Greeting = "Hello, men!"
          });
       }
 
