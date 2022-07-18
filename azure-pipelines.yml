@@ -33,7 +33,7 @@ steps:
   name: 'BuildSource'
   inputs:
     command: 'build'
-    projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI\xAPI*.csproj'
+    projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
 
 
 - task: DotNetCoreCLI@2
