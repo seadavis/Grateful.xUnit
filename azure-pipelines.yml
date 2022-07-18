@@ -30,7 +30,13 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
+    projects: '**/src/*.csproj'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/xAPI.Tests.csproj'
 
 - task: DotNetCoreCLI@2
   inputs:
