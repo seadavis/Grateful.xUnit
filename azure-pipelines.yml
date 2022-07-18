@@ -15,20 +15,57 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
 
-- task: VSBuild@1
+- task: UseDotNet@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    packageType: 'sdk'
+    version: '6.x'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
+  name: 'RestoreNuget'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'restore'
+    feedsToUse: 'select'
+    noCache: true
+
+- task: DotNetCoreCLI@2
+  name: 'BuildSource'
+  inputs:
+    command: 'build'
+    projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
+
+
+- task: DotNetCoreCLI@2
+  name: 'BuildTestProjects'
+  inputs:
+    command: 'build'
+    projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
+
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: 'test.settings.json'
+
+- task: DownloadSecureFile@1
+  inputs:
+    secureFile: 'appsettings.Development.json'
+
+- task: CopyFiles@2
+  name: 'CopyTestSettings'
+  inputs:
+    Contents: '**\test.settings.json'
+    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
+
+- task: CopyFiles@2
+  name: 'CopyDevSettings'
+  inputs:
+    Contents: '**\appsettings.Development.json'
+    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
+
+
+- task: DotNetCoreCLI@2
+  name: 'RunTests'
+  inputs:
+    command: 'test'
+    projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
+
