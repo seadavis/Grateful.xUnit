@@ -46,5 +46,5 @@ steps:
   name: 'RunTests'
   inputs:
     command: 'test'
-    projects: '$(Agent.WorkFolder)\1\test\xAPI.Tests\xAPI.Tests.csproj'
+    projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
 
