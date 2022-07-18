@@ -16,21 +16,12 @@ variables:
 
 steps:
 
-
-- task: UseDotNet@2
-  inputs:
-    packageType: 'sdk'
-    version: '6.x'
-
-
 - task: DownloadSecureFile@1
-  name: testSettings
   displayName: 'DownloadTestSettings'
   inputs:
     secureFile: 'test.settings.json'
 
 - task: DownloadSecureFile@1
-  name: appSettings
   displayName: 'DownloadAppSettings'
   inputs:
     secureFile: 'appsettings.Development.json'
@@ -38,14 +29,22 @@ steps:
 - task: CopyFiles@2
   name: 'CopyTestSettings'
   inputs:
-    Contents: '$(testSettings.secureFilePath)'
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: 'test.settings.json'
     TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
 
 - task: CopyFiles@2
   name: 'CopyDevSettings'
   inputs:
-    Contents: '$(appSettins.secureFilePath)'
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: 'appsettings.development.json'
     TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '6.x'
+
 - task: DotNetCoreCLI@2
   name: 'RestoreNuget'
   inputs:
