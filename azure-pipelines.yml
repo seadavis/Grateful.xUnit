@@ -53,7 +53,8 @@ stages:
         inputs:
           packageType: 'sdk'
           version: '6.x'
-
+    - job: Build_Execute_Tests
+      steps:
       - task: DotNetCoreCLI@2
         name: 'RestoreNuget'
         inputs:
