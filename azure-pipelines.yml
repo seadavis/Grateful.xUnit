@@ -88,11 +88,11 @@ steps:
     buildProperties: 'owners=Sean Davis;version="$(BuildNumber)"'
    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+ - task: PublishBuildArtifacts@1
+   inputs:
+     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+     ArtifactName: 'drop'
+     publishLocation: 'Container'
 
  - task: NuGetCommand@2
    inputs:
