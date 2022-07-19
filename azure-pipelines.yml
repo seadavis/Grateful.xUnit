@@ -19,7 +19,7 @@ variables:
   Revision: $(Rev:r) 
 
 stages:
- - stage: Build and Test
+ - stage: BuildAndTest
    jobs:
     - job: PreSetup
       steps:
