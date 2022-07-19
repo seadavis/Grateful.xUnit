@@ -18,67 +18,72 @@ variables:
   Patch: 0
   Revision: $(Rev:r) 
 
-stages:
- - stage: BuildAndTest
-   jobs:
-    - job: PreSetup
-      steps:
+
+steps:
+
+ - task: DownloadSecureFile@1
+   displayName: 'DownloadTestSettings'
+   inputs:
+     secureFile: 'test.settings.json'
+
+ - task: DownloadSecureFile@1
+   displayName: 'DownloadAppSettings'
+   inputs:
+    secureFile: 'appsettings.Development.json'
+
+ - task: CopyFiles@2
+   name: 'CopyTestSettings'
+   inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: 'test.settings.json'
+    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
+
+- task: CopyFiles@2
+  name: 'CopyDevSettings'
+  inputs:
+    SourceFolder: '$(Agent.TempDirectory)'
+    Contents: 'appsettings.development.json'
+    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
+
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '6.x'
+
+- task: DotNetCoreCLI@2
+  name: 'RestoreNuget'
+  inputs:
+    command: 'restore'
+    feedsToUse: 'select'
+    noCache: true
+
+- task: DotNetCoreCLI@2
+  name: 'BuildSource'
+  inputs:
+    command: 'build'
+    projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
 
 
-      - task: DownloadSecureFile@1
-        displayName: 'DownloadTestSettings'
-        inputs:
-          secureFile: 'test.settings.json'
-
-      - task: DownloadSecureFile@1
-        displayName: 'DownloadAppSettings'
-        inputs:
-          secureFile: 'appsettings.Development.json'
-
-      - task: CopyFiles@2
-        name: 'CopyTestSettings'
-        inputs:
-          SourceFolder: '$(Agent.TempDirectory)'
-          Contents: 'test.settings.json'
-          TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
-
-      - task: CopyFiles@2
-        name: 'CopyDevSettings'
-        inputs:
-          SourceFolder: '$(Agent.TempDirectory)'
-          Contents: 'appsettings.development.json'
-          TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
-
-      - task: UseDotNet@2
-        inputs:
-          packageType: 'sdk'
-          version: '6.x'
-
-      - task: DotNetCoreCLI@2
-        name: 'RestoreNuget'
-        inputs:
-          command: 'restore'
-          feedsToUse: 'select'
-          noCache: true
-
-      - task: DotNetCoreCLI@2
-        name: 'BuildSource'
-        inputs:
-          command: 'build'
-          projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
+- task: DotNetCoreCLI@2
+  name: 'BuildTestProjects'
+  inputs:
+    command: 'build'
+    projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
 
 
-      - task: DotNetCoreCLI@2
-        name: 'BuildTestProjects'
-        inputs:
-          command: 'build'
-          projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
+- task: DotNetCoreCLI@2
+  name: 'RunTests'
+  inputs:
+    command: 'test'
+    projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
 
-
-      - task: DotNetCoreCLI@2
-        name: 'RunTests'
-        inputs:
-          command: 'test'
-          projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
+- task: PowerShell@2
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Write your PowerShell commands here.
+      
+      Write-Host "Hello World"
+    condition: eq(variables['Build.SourceBranch'], 'main')
 
 
