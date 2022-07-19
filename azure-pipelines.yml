@@ -17,6 +17,7 @@ variables:
   Minor: 0
   Patch: 0
   Revision: $(Rev:r) 
+  BuildNumber: $(Major).$(Minor).$(Patch).$(Revision)
 
 
 steps:
@@ -77,13 +78,14 @@ steps:
       command: 'test'
       projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
 
- - task: PowerShell@2
+ - task: NuGetCommand@2
+   name: 'NugetPack'
    inputs:
-    targetType: 'inline'
-    script: |
-        # Write your PowerShell commands here.
-        
-        Write-Host "Hello World"
+    command: 'pack'
+    packagesToPack: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
+    versioningScheme: 'off'
+    buildProperties: 'owners=Sean Davis;version="$(BuildNumber)"'
    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+
 
 
