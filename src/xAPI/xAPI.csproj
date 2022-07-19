@@ -5,6 +5,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Sean Davis</Authors>
+    <Description>Allows for integration tests with xUnit</Description>
   </PropertyGroup>
 
   <ItemGroup>
