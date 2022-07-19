@@ -62,6 +62,7 @@ steps:
    name: 'BuildSource'
    inputs:
     command: 'build'
+    configuration: $(buildConfiguration)
     projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
 
 
