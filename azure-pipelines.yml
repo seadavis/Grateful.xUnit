@@ -88,5 +88,13 @@ steps:
     buildProperties: 'owners=Sean Davis;version="$(BuildNumber)"'
    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
+ - task: NuGetCommand@2
+   inputs:
+    command: 'push'
+    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+    nuGetFeedType: 'external'
+    publishFeedCredentials: 'NugetConnection'
+   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+
 
 
