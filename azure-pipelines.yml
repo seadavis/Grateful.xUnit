@@ -58,11 +58,12 @@ steps:
       feedsToUse: 'select'
       noCache: true
 
+
  - task: DotNetCoreCLI@2
    name: 'BuildSource'
    inputs:
     command: 'build'
-    configuration: $(buildConfiguration)
+    arguments: --configuration $(buildConfiguration)
     projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
 
 
@@ -71,7 +72,6 @@ steps:
    inputs:
       command: 'build'
       projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
-
 
  - task: DotNetCoreCLI@2
    name: 'RunTests'
