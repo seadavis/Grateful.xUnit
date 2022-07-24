@@ -22,7 +22,7 @@ variables:
 
 steps:
 
- - task: DownloadSecureFile@1
+  - task: DownloadSecureFile@1
     displayName: 'DownloadTestSettings'
     inputs:
       secureFile: 'test.settings.json'
@@ -67,17 +67,17 @@ steps:
     projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
 
 
-# - task: DotNetCoreCLI@2
-#   name: 'BuildTestProjects'
-#   inputs:
-#      command: 'build'
-#      projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
+ - task: DotNetCoreCLI@2
+   name: 'BuildTestProjects'
+   inputs:
+      command: 'build'
+      projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
 
-# - task: DotNetCoreCLI@2
-#   name: 'RunTests'
-#   inputs:
-#      command: 'test'
-#      projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
+ - task: DotNetCoreCLI@2
+   name: 'RunTests'
+   inputs:
+      command: 'test'
+      projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
 
  - task: NuGetCommand@2
    name: 'NugetPack'
