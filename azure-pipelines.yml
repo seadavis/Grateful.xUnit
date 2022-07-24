@@ -15,9 +15,7 @@ variables:
   buildConfiguration: 'Release'
   Major: 1
   Minor: 0
-  Patch: 0
-  Revision: $(Rev:r) 
-  BuildNumber: $(Major).$(Minor).$(Revision)
+  BuildNumber: $(Major).$(Minor).$(Rev:r) 
 
 
 steps:
