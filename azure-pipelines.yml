@@ -85,7 +85,7 @@ steps:
     command: 'pack'
     packagesToPack: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
     versioningScheme: 'off'
-    buildProperties: 'owners=Sean Davis;version="$(BuildNumber)"'
+    buildProperties: 'owners=Sean Davis;version="$(BuildNumber)";Author='
    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
  - task: PublishBuildArtifacts@1
