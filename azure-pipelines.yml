@@ -40,60 +40,60 @@ steps:
   - task: CopyFiles@2
     name: 'CopyDevSettings'
     inputs:
-         SourceFolder: '$(Agent.TempDirectory)'
-         Contents: 'appsettings.development.json'
-         TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
+     SourceFolder: '$(Agent.TempDirectory)'
+     Contents: 'appsettings.development.json'
+     TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
 
- - task: UseDotNet@2
-   inputs:
+  - task: UseDotNet@2
+    inputs:
       packageType: 'sdk'
       version: '6.x'
 
- - task: DotNetCoreCLI@2
-   name: 'RestoreNuget'
-   inputs:
+  - task: DotNetCoreCLI@2
+    name: 'RestoreNuget'
+    inputs:
       command: 'restore'
       feedsToUse: 'select'
       noCache: true
 
 
- - task: DotNetCoreCLI@2
-   name: 'BuildSource'
-   inputs:
-    command: 'build'
-    arguments: --configuration $(buildConfiguration)
-    projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
+  - task: DotNetCoreCLI@2
+    name: 'BuildSource'
+    inputs:
+     command: 'build'
+     arguments: --configuration $(buildConfiguration)
+     projects: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
 
 
- - task: DotNetCoreCLI@2
-   name: 'BuildTestProjects'
-   inputs:
+  - task: DotNetCoreCLI@2
+    name: 'BuildTestProjects'
+    inputs:
       command: 'build'
       projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
 
- - task: DotNetCoreCLI@2
-   name: 'RunTests'
-   inputs:
+  - task: DotNetCoreCLI@2
+    name: 'RunTests'
+    inputs:
       command: 'test'
       projects: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\xAPI.Tests.csproj'
 
- - task: NuGetCommand@2
-   name: 'NugetPack'
-   inputs:
-    command: 'pack'
-    packagesToPack: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
-    versioningScheme: 'off'
-    buildProperties: 'version=$(BuildNumber)'
-   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  - task: NuGetCommand@2
+    name: 'NugetPack'
+    inputs:
+     command: 'pack'
+     packagesToPack: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
+     versioningScheme: 'off'
+     buildProperties: 'version=$(BuildNumber)'
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
 
- - task: NuGetCommand@2
-   inputs:
-    command: 'push'
-    packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
-    nuGetFeedType: 'external'
-    publishFeedCredentials: 'NugetConnection'
-   condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+  - task: NuGetCommand@2
+    inputs:
+     command: 'push'
+     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
+     nuGetFeedType: 'external'
+     publishFeedCredentials: 'NugetConnection'
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
 
 
