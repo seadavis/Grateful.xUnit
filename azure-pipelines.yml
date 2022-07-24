@@ -22,29 +22,29 @@ variables:
 
 steps:
 
- - task: DownloadSecureFile@1
-   displayName: 'DownloadTestSettings'
-   inputs:
-     secureFile: 'test.settings.json'
+#  - task: DownloadSecureFile@1
+#    displayName: 'DownloadTestSettings'
+#    inputs:
+#      secureFile: 'test.settings.json'
 
- - task: DownloadSecureFile@1
-   displayName: 'DownloadAppSettings'
-   inputs:
-    secureFile: 'appsettings.Development.json'
+#  - task: DownloadSecureFile@1
+#    displayName: 'DownloadAppSettings'
+#    inputs:
+#     secureFile: 'appsettings.Development.json'
 
- - task: CopyFiles@2
-   name: 'CopyTestSettings'
-   inputs:
-    SourceFolder: '$(Agent.TempDirectory)'
-    Contents: 'test.settings.json'
-    TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
+#  - task: CopyFiles@2
+#    name: 'CopyTestSettings'
+#    inputs:
+#     SourceFolder: '$(Agent.TempDirectory)'
+#     Contents: 'test.settings.json'
+#     TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Tests\'
 
- - task: CopyFiles@2
-   name: 'CopyDevSettings'
-   inputs:
-        SourceFolder: '$(Agent.TempDirectory)'
-        Contents: 'appsettings.development.json'
-        TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
+#  - task: CopyFiles@2
+#    name: 'CopyDevSettings'
+#    inputs:
+#         SourceFolder: '$(Agent.TempDirectory)'
+#         Contents: 'appsettings.development.json'
+#         TargetFolder: '$(Agent.WorkFolder)\1\s\test\xAPI.Test.SampleProject\'
 
  - task: UseDotNet@2
    inputs:
