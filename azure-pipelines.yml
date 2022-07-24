@@ -15,7 +15,8 @@ variables:
   buildConfiguration: 'Release'
   Major: 1
   Minor: 0
-  BuildNumber: $[counter(variables['Minor'], 1)]
+  Patch: $[counter(variables['Minor'], 1)]
+  BuildNumber: $(Major).$(Minor).$(Patch)
 
 
 steps:
