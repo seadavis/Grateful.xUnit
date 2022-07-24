@@ -85,7 +85,7 @@ steps:
      packagesToPack: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
      versioningScheme: 'off'
      buildProperties: 'version=$(BuildNumber)'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+    condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/main'), succeeded())
 
 
   - task: NuGetCommand@2
@@ -94,7 +94,7 @@ steps:
      packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
      nuGetFeedType: 'external'
      publishFeedCredentials: 'NugetConnection'
-    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
+    condition: and(eq(variables['Build.SourceBranch'], 'refs/heads/main'), succeeded())
 
 
 
