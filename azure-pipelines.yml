@@ -85,14 +85,9 @@ steps:
     command: 'pack'
     packagesToPack: '$(Agent.WorkFolder)\1\s\src\xAPI\xAPI*.csproj'
     versioningScheme: 'off'
-    buildProperties: 'owners=Sean Davis;version="$(BuildNumber)";Author='
+    buildProperties: 'version=$(BuildNumber)'
    condition: eq(variables['Build.SourceBranch'], 'refs/heads/main')
 
- - task: PublishBuildArtifacts@1
-   inputs:
-     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-     ArtifactName: 'drop'
-     publishLocation: 'Container'
 
  - task: NuGetCommand@2
    inputs:
