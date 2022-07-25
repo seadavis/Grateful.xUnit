@@ -5,10 +5,6 @@
 
 trigger:
 - main
-pr:
-  branches:
-    include:
-    - features/*
 
 pool:
   vmImage: 'windows-latest'
