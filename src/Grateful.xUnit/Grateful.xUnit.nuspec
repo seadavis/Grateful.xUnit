@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>xUnit.API</id>
+    <version>$version$</version>
+    <title>Grateful.xUnit</title>
+    <authors>Sean Davis</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/seadavis/Grateful.xUnit</projectUrl>
+    <description>Integration tests for API's</description>
+  </metadata>
+</package>
