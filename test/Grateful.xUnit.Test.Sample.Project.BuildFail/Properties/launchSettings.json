@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "https://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "xAPI.Test.Sample.Project.BuildFail": {
+    "Grateful.xUnit.Test.Sample.Project.BuildFail": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,
