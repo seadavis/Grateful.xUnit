@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package >
   <metadata>
-    <id>xUnit.API</id>
+    <id>Grateful.xUnit</id>
     <version>$version$</version>
     <title>Grateful.xUnit</title>
     <authors>Sean Davis</authors>
