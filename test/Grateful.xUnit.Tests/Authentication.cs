@@ -33,6 +33,7 @@ namespace Grateful.xUnit.Tests
             Greeting = "Salutations!",
             Name = "Authorized User!"
          });
+
       }
 
       [Fact]
