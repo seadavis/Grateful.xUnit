@@ -20,7 +20,7 @@ To enable the shared context across tests in xUnit, Grateful uses collections.
 
 Every test in Grateful must be specified in a collection.
 
-The most basic testing class in the Unit Test is the <a href="https://github.com/seadavis/Grateful.xUnit/blob/main/test/Grateful.xUnit.Tests/HttpCollections.cs">HttpCollections.cs</a> class. It uses the collection called, "ASP.NET Working collection" which is specified like so,
+The most basic testing class in the test project is the <a href="https://github.com/seadavis/Grateful.xUnit/blob/main/test/Grateful.xUnit.Tests/HttpCollections.cs">HttpCollections.cs</a> class. It uses the collection called, "ASP.NET Working collection" which is specified like so,
 
 ```csharp
 [CollectionDefinition("ASP.NET Working Collection")]
@@ -29,7 +29,7 @@ public class WorkingProjectCollection : ICollectionFixture<WorkingProjectFixture
 }
 ```
 
-And the corresponding fixture
+And the corresponding fixture is,
 
 ```csharp
 public class WorkingProjectFixture : HttpClientFixture
