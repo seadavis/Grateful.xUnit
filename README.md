@@ -4,7 +4,7 @@ Grateful is a library that takes the pain and headache away from integration tes
 # Table of Contents
 [HowToUse](#howto)<br />
 [Contributing](#contributing)<br />
-[Grateful?](#whyname)<br />
+[Grateful?](#grateful?)<br />
 
 ## How to Use
 
@@ -180,7 +180,7 @@ This project is open for contributions. Simply open a pull request, and I will l
 
 To run the unit tests locally you must setup authorization as described in the preceeding section. the test.settings.json file, must be ignored for the PR to be accepted.
 
-## whyname
+## Grateful?
 The name is because it is an Inte<b>grat</b>ion testing framework. And because I am grateful to have such a framework.
 
 This project was designed because I was on a project that failed, in part because I spent too long unit testing, what should have been an integration test. At that moment I was finally fed up with mocks, and stubs, but I still wanted to test. So I invented Grateful, the framework that makes it easy to integration test ASP.NET WebAPI projects.
