@@ -1,6 +1,8 @@
 # Grateful
 Grateful is a library that takes the pain and headache away from integration testing an ASP.NET Web API project. In other words it is a framework for integration testing an ASP.NET Web API project.
 
+This is a Nuget project, and can be found <a href="https://www.nuget.org/packages/Grateful.xUnit#readme-body-tab">here</a>
+
 # Table of Contents
 1) [HowToUse](#howto)
 2) [Contributing](#contributing)
