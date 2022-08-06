@@ -2,9 +2,9 @@
 Grateful is a library that takes the pain and headache away from integration testing an ASP.NET Web API project. In other words it is a framework for integration testing an ASP.NET Web API project.
 
 # Table of Contents
-[HowToUse](#howto)<br />
-[Contributing](#contributing)<br />
-[Grateful?](#grateful?)<br />
+1) [HowToUse](#howto)
+2) [Contributing](#contributing)
+3) [Grateful?](#grateful?)
 
 ## How to Use
 
@@ -180,7 +180,7 @@ This project is open for contributions. Simply open a pull request, and I will l
 
 To run the unit tests locally you must setup authorization as described in the preceeding section. the test.settings.json file, must be ignored for the PR to be accepted.
 
-And you should use appSettings.Development.json in Grateful.xUnit.Test.SampleProject, for the ASP.NET Web API secrets, and it should be json ignored.
+And you should use appSettings.Development.json in Grateful.xUnit.Test.SampleProject, for the ASP.NET Web API secrets, and it should be json ignored1 ).
 
 ## Grateful?
 The name is because it is an Inte<b>grat</b>ion testing framework. And because I am grateful to have such a framework.
