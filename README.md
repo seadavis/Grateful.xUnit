@@ -176,9 +176,11 @@ And sample yaml for copying from the Azure library into the xUnit project.
 
 ## Contributing
 
-This project is open for contributions. Simply open a pull request, and I will look at it, and integrate if appropriate.
+This project is open for contributions. Simply open a pull request, and I will look at it, and I will integrate if appropriate.
 
 To run the unit tests locally you must setup authorization as described in the preceeding section. the test.settings.json file, must be ignored for the PR to be accepted.
+
+And you should use appSettings.Development.json in Grateful.xUnit.Test.SampleProject, for the ASP.NET Web API secrets, and it should be json ignored.
 
 ## Grateful?
 The name is because it is an Inte<b>grat</b>ion testing framework. And because I am grateful to have such a framework.
