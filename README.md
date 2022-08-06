@@ -66,7 +66,7 @@ public async Task Get()
 }
 ```
 
-And a post,
+### Post
 
 ```csharp
 [Fact]
@@ -85,7 +85,7 @@ public async Task Post()
 }
 ```
 
-And a delete, 
+### Delete
 
 ```csharp
 [Fact]
