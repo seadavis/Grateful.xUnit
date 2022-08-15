@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Grateful.xUnit.Test.SampleProject.Data;
+using System.Security.Claims;
 
 namespace Grateful.xUnit.Test.SampleProject.Controllers
 {
@@ -40,6 +41,7 @@ namespace Grateful.xUnit.Test.SampleProject.Controllers
       [HttpDelete("api/auth")]
       public HelloWorldData DeleteAuthorized()
       {
+         var identity = HttpContext.User.Identity as ClaimsIdentity;
          return new HelloWorldData()
          {
             Greeting = "Salutations!",

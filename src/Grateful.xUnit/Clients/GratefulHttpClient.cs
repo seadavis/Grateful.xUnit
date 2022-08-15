@@ -6,6 +6,7 @@ using Microsoft.Identity.Client;
 using System.Net.Http.Headers;
 using Grateful.xUnit.Clients;
 using Grateful.xUnit.Processes;
+using Xunit.Abstractions;
 
 namespace Grateful.xUnit.Clients
 {
@@ -14,14 +15,17 @@ namespace Grateful.xUnit.Clients
       #region Private Variables
 
       private ProcessRunner _runner;
+      private ITestOutputHelper _output;
+
 
       #endregion
 
       #region Public Constructor
 
-      public GratefulHttpClient(ProcessRunner runner)
+      internal GratefulHttpClient(ProcessRunner runner, ITestOutputHelper testOuputHelper)
       {
          _runner = runner;  
+         _output = testOuputHelper;
       }
 
       #endregion
@@ -85,6 +89,7 @@ namespace Grateful.xUnit.Clients
          if (token == null)
             throw new Exception("Missing Access Token");
 
+         _output?.WriteLine($"Using MSAL Token: {token} for Authentication");
          return token;
       }
 
