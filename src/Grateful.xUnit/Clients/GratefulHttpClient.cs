@@ -17,6 +17,7 @@ namespace Grateful.xUnit.Clients
       private ProcessRunner _runner;
       private ITestOutputHelper _output;
 
+
       #endregion
 
       #region Public Constructor
