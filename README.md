@@ -117,7 +117,11 @@ The overview section of the Appregistration will then provide all of the info yo
    }
 ```
 
-Then to allow for daemon applications you'll need to add an API permission for your API project. Simply select "Add a Permission" from the API permissions section of Grateful.Sample.API, and then select the API, under APIs my organization uses. And select Application permissions. Then give the newly created permission admin consent.
+Then to allow for daemon applications you'll need to add an API permission for your API project. 
+
+First create an appregisitration for the API for example Grateful.Sample.API, then add an Application ID URI. Then create an App role for the API app reigstration.
+
+Simply select "Add a Permission" from the API permissions section of Grateful.Sample.API, and then select the API, under APIs my organization uses. And select Application permissions. Then give the newly created permission admin consent.
 
 For the xUnit project, you'll need another App registration, such as Grateful.Sample.App. You'll need to create a new client secret. And add the permission we previously created for the API app registration. Then give the permission admin consent.
 
