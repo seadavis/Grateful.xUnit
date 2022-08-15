@@ -9,6 +9,7 @@ using Grateful.xUnit.Test.SampleProject.Data;
 using FluentAssertions;
 using System.Net;
 using Grateful.xUnit.Assertions;
+using Xunit.Abstractions;
 
 namespace Grateful.xUnit.Tests
 {
@@ -18,9 +19,10 @@ namespace Grateful.xUnit.Tests
 
       WorkingProjectFixture _fixture;
 
-      public Authentication(WorkingProjectFixture fixture)
+      public Authentication(WorkingProjectFixture fixture, ITestOutputHelper output)
       {
          _fixture = fixture;
+         _fixture.OutputHelper = output;
       }
 
       [Fact]

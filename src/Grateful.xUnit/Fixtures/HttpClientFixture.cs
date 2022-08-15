@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Grateful.xUnit.Clients;
 using Grateful.xUnit.Exceptions;
+using Xunit.Abstractions;
 
 namespace Grateful.xUnit.Fixtures
 {
@@ -16,10 +17,17 @@ namespace Grateful.xUnit.Fixtures
       #region Private Variables
 
       private ProcessRunner _runner;
+      
 
       #endregion
 
       #region Properties
+
+      /// <summary>
+      /// If not null passed into the HttpClient
+      /// so that we can log messages to the console
+      /// </summary>
+      public ITestOutputHelper? OutputHelper { get; set; }
 
       /// <summary>
       /// The HttpClient.
@@ -32,7 +40,7 @@ namespace Grateful.xUnit.Fixtures
             if (_runner.HasExited())
                throw new StartingProcessException(_runner.GetOutput());
 
-            return new GratefulHttpClient(_runner);
+            return new GratefulHttpClient(_runner, OutputHelper);
          }
       }
 
@@ -49,7 +57,7 @@ namespace Grateful.xUnit.Fixtures
       /// Should be the folder without the path
       /// Example:
       /// <code>
-      /// HttpClientFixture(@"C:\Source\ASPProject")
+      /// HttpClientFixture(@"C:\Source\ASPProject");
       /// </code>
       /// 
       /// </param>
@@ -59,10 +67,11 @@ namespace Grateful.xUnit.Fixtures
          _runner.Start();
       }
 
-
       #endregion
 
       #region IDispoable
+
+
 
       public void Dispose()
       {
